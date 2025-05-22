@@ -7,6 +7,9 @@
   <link rel="icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="quiz.css">
+  <link rel="stylesheet" href="notes.css">
+  <link rel="stylesheet" href="drawing.css">
+  <link rel="stylesheet" href="chatgpt.css">
   <style>
     :root {
       --primary-50: #e6f0ff;
@@ -814,10 +817,10 @@
   <!-- Main App  <div id="app" style="display: none;">
     <!-- Elementos de áudio para efeitos sonoros -->
     <audio id="sound-positive" preload="auto">
-        <source src="sounds/positive.wav" type="audio/wav">
+        <source src="positive.wav" type="audio/wav">
     </audio>
     <audio id="sound-negative" preload="auto">
-        <source src="sounds/negative.wav" type="audio/wav">
+        <source src="negative.wav" type="audio/wav">
     </audio>
     
     <!-- Header -->     <div class="container">
@@ -838,6 +841,7 @@
           <button class="tab" data-tab="historyTab">Histórico</button>
           <button class="tab" data-tab="rewardsTab">Recompensas</button>
           <button class="tab" data-tab="quizTab">Quiz</button>
+          <button class="tab" data-tab="notesTab">Blocos de Notas</button>
           <button class="tab" data-tab="settingsTab">Configurações</button>
         </div>
         
@@ -1007,6 +1011,7 @@
                 
                 <!-- Seção de pergunta -->
                 <div id="secao-pergunta" style="display: none;">
+                  <div id="quiz-theme-display" class="quiz-theme-info" style="text-align: center; margin-bottom: 1rem; font-weight: 500; padding: 0.5rem; background: linear-gradient(135deg, var(--primary-50), white); border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border-left: 3px solid var(--primary-400);"></div> <!-- Elemento para exibir o tema -->
                   <div class="pergunta-container">
                     <span id="dificuldade-badge-pergunta" class="dificuldade-badge facil">Nível fácil</span>
                     <div id="texto-pergunta" class="texto-pergunta">Texto da pergunta aqui?</div>
@@ -1031,6 +1036,107 @@
               </div>
             </div>
           </div>
+          
+          <!-- Blocos de Notas Tab -->
+          <div id="notesTab" class="tab-pane" style="display: none;">
+            <div class="card">
+              <h2 class="card-title">Blocos de Notas</h2>
+              <p class="card-subtitle">Crie e organize suas anotações pessoais.</p>
+              
+              <div class="notes-container">
+                <div class="notes-sidebar">
+                  <div class="notes-header">
+                    <h3>Meus Blocos</h3>
+                    <button id="createNoteBtn" class="create-note-btn">
+                      <span>+</span> Novo
+                    </button>
+                  </div>
+                  <div id="notesList" class="notes-list">
+                    <!-- Lista de blocos de notas será preenchida dinamicamente -->
+                  </div>
+                </div>
+                
+                <div class="notes-content">
+                  <div id="emptyNoteState" class="empty-note-state">
+                    <div class="empty-note-icon">📝</div>
+                    <h3>Nenhum bloco de notas selecionado</h3>
+                    <p>Selecione um bloco existente ou crie um novo para começar.</p>
+                  </div>
+                  
+                  <div id="noteEditor" class="note-editor" style="display: none;">
+                    <div class="note-toolbar">
+                      <input type="text" id="noteTitle" class="note-title-input" placeholder="Título do bloco de notas">
+                      <div class="note-actions">
+                        <div class="note-color-picker">
+                          <button class="color-btn" data-color="default" title="Padrão"></button>
+                          <button class="color-btn red" data-color="red" title="Vermelho"></button>
+                          <button class="color-btn green" data-color="green" title="Verde"></button>
+                          <button class="color-btn blue" data-color="blue" title="Azul"></button>
+                          <button class="color-btn yellow" data-color="yellow" title="Amarelo"></button>
+                          <button class="color-btn purple" data-color="purple" title="Roxo"></button>
+                        </div>
+                        <button id="saveNoteBtn" class="save-note-btn">Salvar</button>
+                      </div>
+                    </div>
+                    
+                    <div id="textContainer" style="height: 100%;">
+                      <textarea id="noteContent" class="note-content-textarea" placeholder="Digite suas anotações aqui..."></textarea>
+                    </div>
+                    
+                    <div id="drawingContainer" class="drawing-container" style="display: none;">
+                      <div class="drawing-toolbar">
+                        <input type="color" id="drawingColorPicker" value="#000000" title="Cor do traço">
+                        <input type="range" id="drawingLineWidth" min="1" max="20" value="2" title="Espessura do traço">
+                        <button id="clearDrawingBtn" title="Limpar desenho">Limpar</button>
+                      </div>
+                      <div class="drawing-canvas-container">
+                        <canvas id="drawingCanvas"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Leituras Tab -->
+          <div id="readingsTab" class="tab-pane" style="display: none;">
+            <div class="card">
+              <h2 class="card-title">Leituras</h2>
+              <p class="card-subtitle">Adicione e organize textos de livros para leitura.</p>
+              
+              <div class="readings-container">
+                <div class="readings-sidebar">
+                  <div class="readings-header">
+                    <h3>Meus Textos</h3>
+                    <button id="createReadingBtn" class="create-reading-btn">
+                      <span>+</span> Novo
+                    </button>
+                  </div>
+                  <div id="readingsList" class="readings-list">
+                    <!-- Lista de leituras será preenchida dinamicamente -->
+                  </div>
+                </div>
+                
+                <div class="readings-content">
+                  <div id="emptyReadingState" class="empty-reading-state">
+                    <div class="empty-reading-icon">📚</div>
+                    <h3>Nenhum texto selecionado</h3>
+                    <p>Selecione um texto existente ou crie um novo para começar.</p>
+                  </div>
+                  
+                  <div id="readingEditor" class="reading-editor" style="display: none;">
+                    <div class="reading-toolbar">
+                      <input type="text" id="readingTitle" class="reading-title-input" placeholder="Título do livro">
+                      <button id="saveReadingBtn" class="save-reading-btn">Salvar</button>
+                    </div>
+                    <textarea id="readingContent" class="reading-content-textarea" placeholder="Cole aqui o texto do livro..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           
           <!-- Configurações Tab -->
           <div id="settingsTab" class="tab-pane" style="display: none;">
@@ -1132,34 +1238,34 @@
   <script>
     // Missões possíveis
     const MISSOES_POSSIVEIS = [
-      // Missões fáceis (2 pontos)
-      { id: 1, nome: 'Faça 15 agachamentos', descricao: 'Fortaleça suas pernas com agachamentos simples', dificuldade: 'facil', pontos: 2 },
-      { id: 2, nome: 'Beba dois copos de água', descricao: 'Mantenha-se hidratado durante o dia', dificuldade: 'facil', pontos: 2 },
-      { id: 3, nome: 'Alongue os braços por 2 minutos', descricao: 'Alongamentos ajudam a prevenir lesões', dificuldade: 'facil', pontos: 2 },
-      { id: 4, nome: 'Respire profundamente 15 vezes lentamente', descricao: 'Reduza o estresse com respiração consciente', dificuldade: 'facil', pontos: 2 },
-      { id: 5, nome: 'Faça uma pausa de 2 minutos da tela', descricao: 'Descanse seus olhos da luz azul', dificuldade: 'facil', pontos: 2 },
-      { id: 6, nome: 'Dê uma volta com o cachorro', descricao: 'Movimente-se um pouco para ativar a circulação', dificuldade: 'facil', pontos: 2 },
-      { id: 7, nome: 'Faça 10 flexões de braço na parede', descricao: 'Fortaleça o core e os braços', dificuldade: 'facil', pontos: 2 },
-      { id: 8, nome: 'Fique longe do celular por 10 Minutos', descricao: 'Melhorar a sua visão e vício da tela', dificuldade: 'facil', pontos: 2 },
-      { id: 9, nome: 'Faça rotação do pescoço por 1 Minuto', descricao: 'Alivie a tensão no pescoço com movimentos suaves', dificuldade: 'facil', pontos: 2 },
-      { id: 10, nome: 'Coma uma fruta ou alguma coisa saudável', descricao: 'Adicione nutrientes à sua alimentação', dificuldade: 'facil', pontos: 2 },
-      { id: 11, nome: 'Faça 15 Agachamentos', descricao: 'Fortalece pernas e glúteos. Pode começar com o peso do próprio corpo.', dificuldade: 'facil', pontos: 2 },
-      { id: 12, nome: 'Medite por 5 minutos', descricao: 'Acalme sua mente com meditação rápida', dificuldade: 'facil', pontos: 2 },
-      { id: 13, nome: 'Beba um copo de água', descricao: 'Manter a saúde em dia', dificuldade: 'facil', pontos: 2 },
-      { id: 14, nome: 'Seja afetiva com uma pessoa importante', descricao: 'Manter a boa relação com amigos ou familiares', dificuldade: 'facil', pontos: 2 },
-      { id: 15, nome: 'Faça 10 Agachamentos', descricao: 'Exercício completo para pernas, glúteos e equilíbrio', dificuldade: 'facil', pontos: 2 },
+      // Missões fáceis (3 pontos)
+      { id: 1, nome: 'Faça 15 agachamentos', descricao: 'Fortaleça suas pernas com agachamentos simples', dificuldade: 'facil', pontos: 3 },
+      { id: 2, nome: 'Beba dois copos de água', descricao: 'Mantenha-se hidratado durante o dia', dificuldade: 'facil', pontos: 3 },
+      { id: 3, nome: 'Alongue os braços por 2 minutos', descricao: 'Alongamentos ajudam a prevenir lesões', dificuldade: 'facil', pontos: 3 },
+      { id: 4, nome: 'Respire profundamente 15 vezes lentamente', descricao: 'Reduza o estresse com respiração consciente', dificuldade: 'facil', pontos: 3 },
+      { id: 5, nome: 'Faça uma pausa de 2 minutos da tela', descricao: 'Descanse seus olhos da luz azul', dificuldade: 'facil', pontos: 3 },
+      { id: 6, nome: 'Dê uma volta com o cachorro', descricao: 'Movimente-se um pouco para ativar a circulação', dificuldade: 'facil', pontos: 3 },
+      { id: 7, nome: 'Faça 10 flexões de braço na parede', descricao: 'Fortaleça o core e os braços', dificuldade: 'facil', pontos: 3 },
+      { id: 8, nome: 'Fique longe do celular por 10 Minutos', descricao: 'Melhorar a sua visão e vício da tela', dificuldade: 'facil', pontos: 3 },
+      { id: 9, nome: 'Faça rotação do pescoço por 1 Minuto', descricao: 'Alivie a tensão no pescoço com movimentos suaves', dificuldade: 'facil', pontos: 3 },
+      { id: 10, nome: 'Coma uma fruta ou alguma coisa saudável', descricao: 'Adicione nutrientes à sua alimentação', dificuldade: 'facil', pontos: 3 },
+      { id: 11, nome: 'Faça 15 Agachamentos', descricao: 'Fortalece pernas e glúteos. Pode começar com o peso do próprio corpo.', dificuldade: 'facil', pontos: 3 },
+      { id: 12, nome: 'Medite por 5 minutos', descricao: 'Acalme sua mente com meditação rápida', dificuldade: 'facil', pontos: 3 },
+      { id: 13, nome: 'Beba um copo de água', descricao: 'Manter a saúde em dia', dificuldade: 'facil', pontos: 3 },
+      { id: 14, nome: 'Seja afetiva com uma pessoa importante', descricao: 'Manter a boa relação com amigos ou familiares', dificuldade: 'facil', pontos: 3 },
+      { id: 15, nome: 'Faça 10 Agachamentos', descricao: 'Exercício completo para pernas, glúteos e equilíbrio', dificuldade: 'facil', pontos: 3 },
       
-      // Missões difíceis (4 pontos)
-      { id: 16, nome: 'Pule 50 Vezes', descricao: 'Exercício de alta intensidade para fortalecer pernas e glúteos', dificuldade: 'dificil', pontos: 4 },
-      { id: 17, nome: 'Corre parada por 4 Minutos', descricao: 'Desafie sua força muscular com flexões tradicionais', dificuldade: 'dificil', pontos: 4 },
-      { id: 18, nome: 'Faça prancha por 2 minutos', descricao: 'Fortaleça seu core e melhore sua resistência', dificuldade: 'dificil', pontos: 4 },
-      { id: 19, nome: 'Brinque com os animais sem o celular por 3 Minutos', descricao: 'Ter uma relação fora das telas', dificuldade: 'dificil', pontos: 4 },
-      { id: 20, nome: 'Faça 20 Polichinelos', descricao: 'Melhore a circulação nas pernas e braços', dificuldade: 'dificil', pontos: 4 },
-      { id: 21, nome: 'Corra parada por 2 Minutos', descricao: 'Aumente seus batimentos cardíacos', dificuldade: 'dificil', pontos: 4 },
-      { id: 22, nome: 'Limpe o seu quarto', descricao: 'Um ambiente organizado ajuda na concentração', dificuldade: 'dificil', pontos: 4 },
-      { id: 23, nome: 'Pule 30 Vezes', descricao: 'Exercício de corpo inteiro de alta intensidade', dificuldade: 'dificil', pontos: 4 },
-      { id: 24, nome: 'Coma alguma coisa imediatamente, mas sem pressa', descricao: 'Preencher a rotina de alimentação', dificuldade: 'dificil', pontos: 4 },
-      { id: 25, nome: 'Abrace algum familiar', descricao: 'Tenha proximidade com a sua família', dificuldade: 'dificil', pontos: 4 }
+      // Missões difíceis (6 pontos)
+      { id: 16, nome: 'Pule 50 Vezes', descricao: 'Exercício de alta intensidade para fortalecer pernas e glúteos', dificuldade: 'dificil', pontos: 6 },
+      { id: 17, nome: 'Corre parada por 4 Minutos', descricao: 'Desafie sua força muscular com flexões tradicionais', dificuldade: 'dificil', pontos: 6 },
+      { id: 18, nome: 'Faça prancha por 2 minutos', descricao: 'Fortaleça seu core e melhore sua resistência', dificuldade: 'dificil', pontos: 6 },
+      { id: 19, nome: 'Brinque com os animais sem o celular por 10 Minutos', descricao: 'Ter uma relação fora das telas', dificuldade: 'dificil', pontos: 6 },
+      { id: 20, nome: 'Faça 20 Polichinelos', descricao: 'Melhore a circulação nas pernas e braços', dificuldade: 'dificil', pontos: 6 },
+      { id: 21, nome: 'Corra parada por 5 Minutos', descricao: 'Aumente seus batimentos cardíacos', dificuldade: 'dificil', pontos: 6 },
+      { id: 22, nome: 'Limpe o seu quarto', descricao: 'Um ambiente organizado ajuda na concentração', dificuldade: 'dificil', pontos: 6 },
+      { id: 23, nome: 'Pule 60 Vezes', descricao: 'Exercício de corpo inteiro de alta intensidade', dificuldade: 'dificil', pontos: 6 },
+      { id: 24, nome: 'Coma alguma coisa imediatamente, mas sem pressa', descricao: 'Preencher a rotina de alimentação', dificuldade: 'dificil', pontos: 6 },
+      { id: 25, nome: 'Abrace algum familiar', descricao: 'Tenha proximidade com a sua família', dificuldade: 'dificil', pontos: 6 }
     ];
 
     // Estado da aplicação
@@ -1928,5 +2034,8 @@
     document.addEventListener('DOMContentLoaded', init);
   </script>
   <script src="quiz.js"></script>
+  <script src="notes.js"></script>
+  <script src="drawing.js"></script>
+  <script src="chatgpt.js"></script>
 </body>
 </html>
